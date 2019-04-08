@@ -14,7 +14,7 @@
           {
             type:"POST",
             data:{"stype":$("#stype").val(),"text":$('#text').val()},
-            url:"/ajaxmain",
+            url:"/ajaxFuture_movie",
             dataType:"json",
             success:function(to_be_movieList){
               console.log(to_be_movieList);
@@ -23,16 +23,16 @@
           });
         }
         function maketable(to_be_movieList){
-            $("#ajaxcard").html(""),
-            $(to_be_movieList).each(function(index,movieInfo){
-            $("#ajaxcard").append(
+            $("#ajaxcard_Second").html(""),
+            $(to_be_movieList).each(function(index,to_be_movieList1){
+            $("#ajaxcard_Second").append(
             '<div class="card" style="width: 18rem;">'+
-            '<img src='+movieInfo.show_movie_img+'class="card-img-top" alt="...">'+
+            '<img src="'+to_be_movieList1.show_movie_img+'"class="card-img-top" alt="...">'+
             '<div class="card-body">'+
-              '<h5 class="card-title">'+movieInfo.show_movie_title+'</h5>'+
+              '<h5 class="card-title">'+to_be_movieList1.show_movie_title+'</h5>'+
               '<p class="card-text">'+
-                '개봉날짜: '+movieInfo.show_movie_open+'</p>'+
-              '<a href="/movie_detail/'+show.m_no+'" class="btn btn-primary">상세보기</a>'+
+                '개봉날짜: '+to_be_movieList1.show_movie_open+'</p>'+
+              '<a href="/movie_detail/'+to_be_movieList1.m_no+'" class="btn btn-primary">상세보기</a>'+
             '</div>'+
         '</div>'
             );
@@ -102,7 +102,7 @@
 <h3 align="center">Movie List</h3>
 <hr />
 
-<div class="row" id="ajaxcard">
+<div class="row" id="ajaxcard_Second">
         {% for movieInfo in to_be_movieList: %}
         <div class="card" style="width: 18rem;">
             <img src="{{movieInfo['show_movie_img']}}" class="card-img-top" alt="...">

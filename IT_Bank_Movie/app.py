@@ -79,7 +79,7 @@ def to_be_movie():
         conn.close()
     return render_template('Future_movie.html',to_be_movieList=result)
 
-#ajax검색
+#ajax현재상영영화검색
 @app.route('/ajaxmain',methods=['POST'])#주소임
 def searchmovie():
     text=request.form.get('text')
@@ -114,8 +114,35 @@ def searchmovie():
     finally:
         conn.close()
         return jsonify(movieList)
-    
-    
+
+#ajax현재상영예정영화검색    
+@app.route('/ajaxFuture_movie',methods=['POST'])#주소임
+def Future_searchmovie():
+    text=request.form.get('text')
+    stype=request.form.get('stype')
+    conn=pymysql.connect(host='127.0.0.1',
+    user='root',
+    password='qwer1234',
+    db='movie',
+    charset='utf8mb4',
+    cursorclass=pymysql.cursors.DictCursor)
+    try:
+        with conn.cursor() as cursor:
+            if stype == 'show_movie_open':
+                sql='select * from movie_to_be_screened where show_movie_open like %s'
+                text='%'+text+'%'
+                cursor.execute(sql,text)
+                to_be_movieList=cursor.fetchall()# 다가져올떄
+                print(to_be_movieList)
+            else:
+                sql='select * from movie_to_be_screened where show_movie_title like %s'
+                text='%'+text+'%'
+                cursor.execute(sql,text)
+                to_be_movieList=cursor.fetchall()# 다가져올떄
+                print(to_be_movieList)
+    finally:
+        conn.close()
+        return jsonify(to_be_movieList)    
 
 
 #영화상세
